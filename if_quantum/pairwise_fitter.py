@@ -37,6 +37,7 @@ class PairwiseStateTomographyFitter(StateTomographyFitter):
             pairs_list = list(combinations(self._qubit_list, 2))
         
         result = {}
+        
         for p in pairs_list:
             rho = self.fit_ij(*p)
             result[p] = rho
