@@ -7,11 +7,16 @@ from qiskit import QuantumCircuit
 
 import numpy as np
 
-def dicke_state_psi(n_qubits = 4, n_ones = 3):
+def dicke_state_psi(n_qubits = 4, n_ones = None):
     ## Outputs the Dicke state from Marcel Bergmann and Otfried Gühne 2013 J. Phys. A: Math. Theor. 46 385304
     ## Dicke state looks like |11100> + |11010> + .. (all other permutations), normalized
-    assert n_qubits > 0, "n_qubits must be > 0"
-    assert n_qubits >= n_ones >= 0, "n_ones must not be larger than n_qubits or smaller than 0"
+    assert n_qubits > 1, "n_qubits must be > 1"
+
+    if n_ones != None:
+        assert n_qubits >= n_ones >= 0, "n_ones must not be larger than n_qubits or smaller than 0"
+    else:
+        # default the n_ones to n_qubits - 1 (the W-state)
+        n_ones = n_qubits - 1
     
     n_zeros = n_qubits - n_ones    
 
@@ -37,7 +42,7 @@ def dicke_state_psi(n_qubits = 4, n_ones = 3):
     return dicke_state
     
 
-def dicke_state_circuit(n_qubits = 4, n_ones = 3):
+def dicke_state_circuit(n_qubits = 4, n_ones = None):
     dicke_state = dicke_state_psi(n_qubits, n_ones)
     q = QuantumRegister(n_qubits)
     qc = QuantumCircuit(q)
