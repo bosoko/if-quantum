@@ -3,10 +3,8 @@ from qiskit import QuantumCircuit, execute, Aer, IBMQ
 
 import numpy as np
 
-
 from qiskit.quantum_info import state_fidelity
 from qiskit.tools.qi.qi import partial_trace, concurrence
-
 
 ##########################
 def Darwin(n, l, t, theta):
