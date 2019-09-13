@@ -22,9 +22,9 @@ def pairwise_state_tomography_circuits(input_circuit, qubit_list):
     Y.add_register(cr)
     Z.add_register(cr)
     
-    X.name = ('X',)*N
-    Y.name = ('Y',)*N
-    Z.name = ('Z',)*N
+    X.name = str(('X',)*N)
+    Y.name = str(('Y',)*N)
+    Z.name = str(('Z',)*N)
 
     for bit_index in range(len(ordered_qubit_list)):
 
