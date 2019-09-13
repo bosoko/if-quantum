@@ -1,3 +1,8 @@
+import copy
+import numpy as np
+
+from qiskit import ClassicalRegister, QuantumRegister, QuantumCircuit
+
 def pairwise_state_tomography_circuits(input_circuit, qubit_list):
     
     ### Initialisation stuff
@@ -20,11 +25,11 @@ def pairwise_state_tomography_circuits(input_circuit, qubit_list):
     X.name = ('X',)*N
     Y.name = ('Y',)*N
     Z.name = ('Z',)*N
-    
+
     for bit_index in range(len(ordered_qubit_list)):
-        
+
         qubit_index = ordered_qubit_list[bit_index]
-        
+
         X.h(qr[qubit_index])
         Y.sdg(qr[qubit_index])
         Y.h(qr[qubit_index])
