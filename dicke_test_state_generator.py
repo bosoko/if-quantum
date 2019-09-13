@@ -6,9 +6,7 @@ from qiskit import QuantumCircuit
 
 import numpy as np
 
-
-
-def dicke_state_circuit(n_qubits = 4, n_ones = 3):
+def dicke_state_psi(n_qubits = 4, n_ones = 3):
     ## Outputs the Dicke state from Marcel Bergmann and Otfried Gühne 2013 J. Phys. A: Math. Theor. 46 385304
     ## Dicke state looks like |11100> + |11010> + .. (all other permutations), normalized
     assert n_qubits > 0, "n_qubits must be > 0"
@@ -35,7 +33,11 @@ def dicke_state_circuit(n_qubits = 4, n_ones = 3):
         
     # normalize
     dicke_state /= np.sqrt(binom(n_qubits,n_ones))
+    return dicke_state
     
+
+def dicke_state_circuit(n_qubits = 4, n_ones = 3):
+    dicke_state = dicke_state_psi(n_qubits, n_ones)
     q = QuantumRegister(n_qubits)
     qc = QuantumCircuit(q)
     qc.initialize(dicke_state, list(range(n_qubits)))
