@@ -46,7 +46,7 @@ def dicke_state_circuit(n_qubits = 4, n_ones = 3):
     return qc
 
 
-def hyper_dicke_state(n_qubits = 4, lbda = 0):
+def hyper_dicke_state_psi(n_qubits = 4, lbda = 0):
     ## From PhysRevA.69.054101
     ## works for even number of qubits (so far)
     assert n_qubits%2 == 0, "n_qubits must be even"
@@ -67,4 +67,12 @@ def hyper_dicke_state(n_qubits = 4, lbda = 0):
     hyper_dicke_state /= norm(hyper_dicke_state)
     
     return hyper_dicke_state
+
+def hyper_dicke_state_circuit(n_qubits = 4, lbda = 0):
+    hyper_dicke_state = hyper_dicke_state_psi(n_qubits, lbda)
+    q = QuantumRegister(n_qubits)
+    qc = QuantumCircuit(q)
+    qc.initialize(hyper_dicke_state, list(range(n_qubits)))
+    
+    return qc
 
