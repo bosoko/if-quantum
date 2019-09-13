@@ -17,8 +17,8 @@ import time
 
 IBMQ.load_accounts()
 nq = 6
-psi = test_state_generator.dicke_state_psi(n_qubits=nq, n_ones=nq-1)
-qc = test_state_generator.dicke_state_circuit(n_qubits=nq, n_ones=nq-1)
+psi = test_state_generator.tony_state()
+qc = test_state_generator.tony_state_circuit()
 print("Circuit created")
 circ = pairwise_state_tomography_circuits(qc, range(nq))
 print("tomography circuits created", len(circ))

@@ -100,8 +100,8 @@ def tony_state_circuit():
     q = QuantumRegister(6)
     qc = QuantumCircuit(q)
     qc.initialize(tony_state_psi(), list(range(6)))
-
     return qc
 
 def q_instability_psi(n_qubits):
     # from Phys. Rev. A 79, 022302 , eq. 4
+    pass
