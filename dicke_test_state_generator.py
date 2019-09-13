@@ -1,6 +1,13 @@
 from sympy.utilities.iterables import multiset_permutations
 from scipy.special import binom
 
+from qiskit import QuantumRegister, ClassicalRegister
+from qiskit import QuantumCircuit
+
+import numpy as np
+
+
+
 def dicke_state_circuit(n_qubits = 4, n_ones = 3):
     assert n_qubits > 0, "n_qubits must be > 0"
     assert n_qubits >= n_ones >= 0, "n_ones must not be larger than n_qubits or smaller than 0"
