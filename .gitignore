@@ -1,3 +1,14 @@
+<<<<<<< HEAD
+.ipynb_checkpoints/Untitled-checkpoint.ipynb
+Untitled.ipynb
+tst.py
+Witness_v1.ipynb
+.ipynb_checkpoints/Witness_v1-checkpoint.ipynb
+Entanglement Witness 2.ipynb
+.ipynb_checkpoints/Entanglement Witness 2-checkpoint.ipynb
+.ipynb_checkpoints/State_generator_tests-checkpoint.ipynb
+State_generator_tests.ipynb
+=======
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -122,3 +133,4 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+>>>>>>> be66fd69aa64c38c071ae656d373297e5b234793
