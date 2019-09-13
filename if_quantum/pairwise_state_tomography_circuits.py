@@ -72,6 +72,7 @@ def pairwise_state_tomography_circuits(input_circuit, qubit_list):
                     meas_layout.h(qr[qubit_index])
                 meas_layout.measure(qr[qubit_index], cr[bit_index])
                 meas_layout.name += (local_basis,)
+            meas_layout.name = str(meas_layout.name)
             output_circuit_list.append(meas_layout)
     
     return output_circuit_list
