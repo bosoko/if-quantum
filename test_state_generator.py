@@ -97,8 +97,8 @@ def tony_state():
     return vector
 
 def tony_state_circuit():
-    q = QuantumRegister(3)
+    q = QuantumRegister(6)
     qc = QuantumCircuit(q)
-    qc.initialize(tony_state(), list(range(3)))
+    qc.initialize(tony_state(), list(range(6)))
 
     return qc
