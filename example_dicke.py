@@ -1,6 +1,8 @@
 """ Test with the Dicke states """
+import numpy as np
 
-import dicke_test_state_generator
+import test_state_generator
+import darwin_state
 from qiskit import execute, Aer, IBMQ
 
 from if_quantum.utils import concurrence
@@ -15,8 +17,8 @@ import time
 
 IBMQ.load_accounts()
 nq = 7
-psi = dicke_test_state_generator.dicke_state_psi(n_qubits=nq, n_ones=nq-1)
-qc = Darwin(3, 10., 1.0, 1.0*np.pi/1.30)
+psi = test_state_generator.dicke_state_psi(n_qubits=nq, n_ones=nq-1)
+qc = darwin_state.Darwin(3, 10., 1.0, 1.0*np.pi/1.30)
 print("Circuit created")
 circ = pairwise_state_tomography_circuits(qc, range(nq))
 print("tomography circuits created", len(circ))
