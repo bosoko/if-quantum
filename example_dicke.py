@@ -1,6 +1,6 @@
 """ Test with the Dicke states """
 
-import dicke_test_state_generator
+import test_state_generator
 from qiskit import execute, Aer, IBMQ
 
 from if_quantum.utils import concurrence
@@ -10,13 +10,14 @@ from if_quantum.pairwise_fitter import PairwiseStateTomographyFitter
 from qiskit.providers import JobStatus
 from qiskit.tools.qi.qi import partial_trace
 from qiskit.quantum_info import state_fidelity
+import darwin_state as ds
 
 import time
 
 IBMQ.load_accounts()
-nq = 7
-psi = dicke_test_state_generator.dicke_state_psi(n_qubits=nq, n_ones=nq-1)
-qc = Darwin(3, 10., 1.0, 1.0*np.pi/1.30)
+nq = 6
+psi = test_state_generator.dicke_state_psi(n_qubits=nq, n_ones=nq-1)
+qc = test_state_generator.dicke_state_circuit(n_qubits=nq, n_ones=nq-1)
 print("Circuit created")
 circ = pairwise_state_tomography_circuits(qc, range(nq))
 print("tomography circuits created", len(circ))
