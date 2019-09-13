@@ -134,3 +134,4 @@ dmypy.json
 # Pyre type checker
 .pyre/
 >>>>>>> be66fd69aa64c38c071ae656d373297e5b234793
+my_stuff/*
