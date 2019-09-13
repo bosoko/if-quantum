@@ -100,3 +100,5 @@ def tony_state_circuit():
     q = QuantumRegister(3)
     qc = QuantumCircuit(q)
     qc.initialize(hyper_dicke_state, list(range(3)))
+    
+    return qc
