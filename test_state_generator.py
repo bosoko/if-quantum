@@ -1,5 +1,6 @@
 from sympy.utilities.iterables import multiset_permutations
 from scipy.special import binom
+from scipy.linalg import norm
 
 from qiskit import QuantumRegister, ClassicalRegister
 from qiskit import QuantumCircuit
@@ -41,6 +42,37 @@ def dicke_state_circuit(n_qubits = 4, n_ones = 3):
     q = QuantumRegister(n_qubits)
     qc = QuantumCircuit(q)
     qc.initialize(dicke_state, list(range(n_qubits)))
+    
+    return qc
+
+
+def hyper_dicke_state_psi(n_qubits = 4, lbda = 0):
+    ## From PhysRevA.69.054101
+    ## works for even number of qubits (so far)
+    assert n_qubits%2 == 0, "n_qubits must be even"
+    
+    # define all the prefactors from paper
+    eta = np.arctanh(lbda/(2*n_qubits))
+    alphafactor = lambda j: binom(n_qubits, j) / np.sqrt(binom(n_qubits, 2*j))
+    alpha = lambda j: np.exp(-eta * (n_qubits - 2 * j)) * alphafactor(j) ## check the coefficient of j
+    
+    # initialize state
+    hyper_dicke_state = np.zeros(2**n_qubits)
+    
+    # hyper_dicke_state is defined as a superposition of dicke states with some prefactors
+    for j in range(n_qubits//2):
+        hyper_dicke_state += alpha(j) * dicke_state_psi(n_qubits = n_qubits, n_ones=j)
+    
+    # normalize
+    hyper_dicke_state /= norm(hyper_dicke_state)
+    
+    return hyper_dicke_state
+
+def hyper_dicke_state_circuit(n_qubits = 4, lbda = 0):
+    hyper_dicke_state = hyper_dicke_state_psi(n_qubits, lbda)
+    q = QuantumRegister(n_qubits)
+    qc = QuantumCircuit(q)
+    qc.initialize(hyper_dicke_state, list(range(n_qubits)))
     
     return qc
 
