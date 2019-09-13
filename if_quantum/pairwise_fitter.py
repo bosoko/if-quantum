@@ -6,7 +6,7 @@ from copy import copy, deepcopy
 from qiskit.result import Result
 from qiskit import QuantumCircuit
 
-from itertools import combinations
+from itertools import combinations, product
 
 class PairwiseStateTomographyFitter(StateTomographyFitter):
     """
@@ -37,7 +37,7 @@ class PairwiseStateTomographyFitter(StateTomographyFitter):
             pairs_list = list(combinations(self._qubit_list, 2))
         
         result = {}
-        
+
         for p in pairs_list:
             rho = self.fit_ij(*p)
             result[p] = rho
@@ -58,9 +58,10 @@ class PairwiseStateTomographyFitter(StateTomographyFitter):
         circuits = self._circuits[0:3]
         circuits += self._circuits[(3 + 6*l) : (3 + 6*(l+1))]
 
+
         # This will create an empty _data dict for the fit function
         self._data = {}
-        
+
         # Process measurement counts into probabilities
         for circ in circuits:
             tup = literal_eval(circ.name)
@@ -69,6 +70,10 @@ class PairwiseStateTomographyFitter(StateTomographyFitter):
 
             # Populate the data 
             self._data[tup] = counts
+
+        expected_corr = product(['X', 'Y', 'Z'], ['X', 'Y', 'Z'])
+        if set(self._data.keys()) != set(expected_corr):
+            raise Exception("Could not find all the measurements required for tomography")
 
         result = super().fit()
         self._data = None
@@ -79,3 +84,4 @@ class PairwiseStateTomographyFitter(StateTomographyFitter):
         while(int(i/3**l) % 3 == int(j/3**l) % 3):
             l += 1
         return l
+
