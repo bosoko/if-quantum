@@ -1,6 +1,7 @@
 import numpy as np
 from qiskit.tools.qi.qi import outer
 import scipy.linalg as la
+
 def concurrence(state):
     """Calculate the concurrence.
 

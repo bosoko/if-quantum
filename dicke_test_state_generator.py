@@ -1,11 +1,12 @@
 from sympy.utilities.iterables import multiset_permutations
 from scipy.special import binom
 
-def dicke_state_circuit(n_qubits = 4, n_zeros = 1, n_ones = 3):
-    assert n_zeros + n_ones == n_qubits, "n_zeros + n_ones should be = n_qubits" 
-    assert n_zeros > 0, "n_zeros should be > 0"
-    assert n_ones > 0, "n_ones should be > 0"
+def dicke_state_circuit(n_qubits = 4, n_ones = 3):
+    assert n_qubits > 0, "n_qubits must be > 0"
+    assert n_qubits >= n_ones >= 0, "n_ones must not be larger than n_qubits or smaller than 0"
     
+    n_zeros = n_qubits - n_ones    
+
     # initialize vector with n_zeros of zeros and n_ones of ones
     zeros = ["0" for _ in range(n_zeros)]
     ones = ["1" for _ in range(n_ones)]
