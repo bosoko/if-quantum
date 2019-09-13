@@ -17,7 +17,7 @@ def concurrence(state):
     if rho.ndim == 1:
         rho = outer(state)
     if len(state) != 4:
-        raise Exception("Concurrence is not defined for more than two qubits")
+        raise Exception("Concurrence is only defined for more than two qubits")
 
     YY = np.fliplr(np.diag([-1, 1, 1, -1]))
     A = rho.dot(YY).dot(rho.conj()).dot(YY)
