@@ -9,6 +9,8 @@ import numpy as np
 
 
 def dicke_state_circuit(n_qubits = 4, n_ones = 3):
+    ## Outputs the Dicke state from Marcel Bergmann and Otfried Gühne 2013 J. Phys. A: Math. Theor. 46 385304
+    ## Dicke state looks like |11100> + |11010> + .. (all other permutations), normalized
     assert n_qubits > 0, "n_qubits must be > 0"
     assert n_qubits >= n_ones >= 0, "n_ones must not be larger than n_qubits or smaller than 0"
     
@@ -39,5 +41,4 @@ def dicke_state_circuit(n_qubits = 4, n_ones = 3):
     qc.initialize(dicke_state, list(range(n_qubits)))
     
     return qc
-    
-    
+
