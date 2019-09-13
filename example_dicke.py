@@ -1,4 +1,5 @@
 """ Test with the Dicke states """
+import numpy as np
 
 import test_state_generator
 from qiskit import execute, Aer, IBMQ
