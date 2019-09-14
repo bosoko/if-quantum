@@ -1,22 +1,42 @@
+"""
+Pairwise tomography circuit generation
+"""
 import copy
 import numpy as np
 
 from qiskit import ClassicalRegister, QuantumRegister, QuantumCircuit
 
-def pairwise_state_tomography_circuits(input_circuit, qubit_list):
-    
+def pairwise_state_tomography_circuits(circuit, measured_qubits):
+    """
+    Generates a minimal set of circuits for pairwise state tomography.
+
+    This performs measurement in the Pauli-basis resulting in 
+    circuits for an n-qubit state tomography experiment.
+
+    Args:
+        circuit (QuantumCircuit): the state preparation circuit to be
+                                  tomographed.
+        measured_qubits (list): list of the indices of qubits to be measured
+    Returns:
+        A list of QuantumCircuit objects containing the original circuit
+        with state tomography measurements appended at the end.
+    """
+
     ### Initialisation stuff
-    ordered_qubit_list = sorted(qubit_list)
-    N = len(qubit_list)
+
+    #TODO: measured_qubits should be like in the ignis tomography functions, 
+    # i.e. it should be a QuantumRegister or a list of QuantumRegisters
     
-    cr = ClassicalRegister(len(qubit_list))
-    qr = input_circuit.qregs[0]
+    ordered_qubit_list = sorted(measured_qubits)
+    N = len(measured_qubits)
     
+    cr = ClassicalRegister(len(measured_qubits))
+    qr = circuit.qregs[0]
     
     ### Uniform measurement settings
-    X = copy.deepcopy(input_circuit)
-    Y = copy.deepcopy(input_circuit)
-    Z = copy.deepcopy(input_circuit)
+    X = copy.deepcopy(circuit)
+    Y = copy.deepcopy(circuit)
+    Z = copy.deepcopy(circuit)
     
     X.add_register(cr)
     Y.add_register(cr)
@@ -40,7 +60,6 @@ def pairwise_state_tomography_circuits(input_circuit, qubit_list):
     
     output_circuit_list = [X, Y, Z]
     
-    
     ### Heterogeneous measurement settings
     # Generation of six possible sequences
     sequences = []
@@ -60,7 +79,7 @@ def pairwise_state_tomography_circuits(input_circuit, qubit_list):
     pairs = {}
     for layout in range(nlayers):
         for sequence in sequences:
-            meas_layout = copy.deepcopy(input_circuit)
+            meas_layout = copy.deepcopy(circuit)
             meas_layout.add_register(cr)
             meas_layout.name = ()
             for bit_index in range(N):
