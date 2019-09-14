@@ -30,17 +30,13 @@ def draw_ent_graph(ent_dict,qubit_list,layout="circular"):
     nx.draw_networkx_nodes(G, pos, node_size=nodesize)
     nx.draw_networkx_edges(G, pos, width=edgewidth)
     nx.draw_networkx_labels(G,pos)
+
     
 
 test_list=np.arange(6).tolist()
-#test_dict= {(0,1): 0.1,
-#            (1,2): 0.2,
-#            (0,2): 0.3,
-#            (0,3): 0,
-#            (1,3):0.7,
-#            (2,3):0.1
-#            }
-draw_ent_graph(pairwise_entanglement,test_list)
+draw_ent_graph(pairwise_entanglement,test_list, layout="spring")
+plt.savefig('tony_spring.png')
+
 
 
 
