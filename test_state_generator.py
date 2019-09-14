@@ -47,7 +47,7 @@ def dicke_state_circuit(n_qubits = 4, n_ones = None):
     q = QuantumRegister(n_qubits)
     qc = QuantumCircuit(q)
     qc.initialize(dicke_state, list(range(n_qubits)))
-    
+
     return qc
 
 
@@ -102,6 +102,73 @@ def tony_state_circuit():
     qc.initialize(tony_state_psi(), list(range(6)))
     return qc
 
-def q_instability_psi(n_qubits):
+
+def q_instability_psi(n_qubits, n_ones):
     # from Phys. Rev. A 79, 022302 , eq. 4
-    pass
+    S = lambda k, l: np.sqrt(2/(n_qubits+1)) * np.sin(np.pi * (k+1) * (l+1) / (n_qubits + 1))
+    
+    ## generate unnormalized dicke state with (n_qubits, k).
+    n_zeros = n_qubits - n_ones
+    # initialize vector with n_zeros of zeros and n_ones of ones
+    zeros_int = [0 for _ in range(n_zeros)]
+    ones_int = [1 for _ in range(n_ones)]
+    statevector_init_int = zeros_int + ones_int
+    
+    # generate all permutations
+    statevect_permutations_int = multiset_permutations(statevector_init_int)
+
+    ls = [list(np.nonzero(row)[0]) for row in list(statevect_permutations_int)]
+    ls = np.array(ls)
+    
+    ks = list(multiset_permutations(list(range(n_ones))))
+    ks = np.array(ks)
+    
+    
+    # construct pairs of ks and ls
+    clist =[]
+    for llist in ls:
+        #1
+        c = 0
+        for j, klist in enumerate(ks):
+
+            cterm = 1 * (-1)**(j + 1)
+            for i in range(len(klist)):
+                k,l = klist[i], llist[i]
+                
+                cterm *= S(k,l)
+            c += cterm
+
+        clist += [c]
+
+
+    
+    zeros = ["0" for _ in range(n_zeros)]
+    ones = ["1" for _ in range(n_ones)]
+    statevector_init = zeros + ones
+    
+    # generate all permutations
+    statevect_permutations = multiset_permutations(statevector_init)
+    
+    # join the string of 0s and 1s, convert it to an integer from base 2, 
+    # these will be the locations of nonzero probabilities
+    positiveproblocations = [int("".join(vect_permutation),2) for vect_permutation in statevect_permutations]
+    
+    # generate Dicke state
+    q_instability_state = [0.]*2**n_qubits
+    for i,loc in enumerate(positiveproblocations):
+        q_instability_state[loc] = clist[i]
+        
+    # normalize
+    q_instability_state = np.array(q_instability_state)
+    q_instability_state /= norm(q_instability_state)
+    return q_instability_state
+
+
+
+def q_instability_state_circuit(n_qubits = 4, n_ones = 3):
+    q_instability = q_instability_psi(n_qubits,n_ones)
+    q = QuantumRegister(n_qubits)
+    qc = QuantumCircuit(q)
+    qc.initialize(hyper_dicke_state, list(range(n_qubits)))
+    
+    return qc
