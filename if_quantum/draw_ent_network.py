@@ -23,7 +23,7 @@ def draw_ent_graph(ent_dict,qubit_list,layout="circular"):
     if layout == "spring":
         pos = nx.spring_layout(G)
     edgewidth = [d['weight'] for (u,v,d) in G.edges(data=True)]
-    nodesize = [e[1]*20 for e in G.degree(weight='weight')]
+    nodesize = [e[1]*100 for e in G.degree(weight='weight')]
     print(nodesize)
     plt.figure(1)
     plt.axis('off')
@@ -33,9 +33,9 @@ def draw_ent_graph(ent_dict,qubit_list,layout="circular"):
 
     
 
-test_list=np.arange(15).tolist()
-draw_ent_graph(pairwise_entanglement_dicke15q,test_list, layout="spring")
-plt.savefig('dicke15_spring.pdf')
+test_list=np.arange(21).tolist()
+draw_ent_graph(pairwise_entanglement_darwin21q,test_list, layout="spring")
+plt.savefig('darwin21q_spring.pdf')
 
 
 
