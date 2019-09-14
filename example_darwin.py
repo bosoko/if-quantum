@@ -16,9 +16,9 @@ import darwin_state as ds
 import time
 
 IBMQ.load_accounts()
-nq = 6
-psi = test_state_generator.tony_state_psi()
-qc = test_state_generator.tony_state_circuit()
+nq = 9
+psi = test_state_generator.dicke_state_psi(n_qubits=nq, n_ones=nq-1)
+qc = ds.Darwin(4, 10., 1.0, 1.0*np.pi/1.30)
 print("Circuit created")
 circ = pairwise_state_tomography_circuits(qc, range(nq))
 print("tomography circuits created", len(circ))

@@ -35,7 +35,7 @@ def draw_ent_graph(ent_dict,qubit_list,layout="circular"):
 
 test_list=np.arange(6).tolist()
 draw_ent_graph(pairwise_entanglement,test_list, layout="spring")
-plt.savefig('tony_spring.png')
+plt.savefig('tony_spring.pdf')
 
 
 
