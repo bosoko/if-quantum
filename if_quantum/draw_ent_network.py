@@ -7,8 +7,8 @@ def make_graph(ent_dict,qubit_list):
     G.add_nodes_from(qubit_list)
     for i in range(len(qubit_list)):
         for j in range(i+1,len(qubit_list)):
-                if ent_dict[(i,j)] != 0.0:
-                    G.add_edge(i,j,weight=ent_dict[(i,j)]*10)
+                if ent_dict[(i, j)] != 0.0:
+                    G.add_edge(i,j,weight=ent_dict[(i, j)]*20)
                 
     return G
 
@@ -27,15 +27,15 @@ def draw_ent_graph(ent_dict,qubit_list,layout="circular"):
     print(nodesize)
     plt.figure(1)
     plt.axis('off')
-    nx.draw_networkx_nodes(G, pos, node_size=nodesize)
+    nx.draw_networkx_nodes(G, pos, node_size=nodesize, node_color="red",edgecolors="black")
     nx.draw_networkx_edges(G, pos, width=edgewidth)
     nx.draw_networkx_labels(G,pos)
 
     
 
-test_list=np.arange(6).tolist()
-draw_ent_graph(pairwise_entanglement,test_list, layout="spring")
-plt.savefig('tony_spring.png')
+test_list=np.arange(21).tolist()
+draw_ent_graph(pairwise_entanglement_darwin21q,test_list, layout="spring")
+plt.savefig('darwin21q_spring.pdf')
 
 
 

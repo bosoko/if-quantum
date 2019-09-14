@@ -1,3 +1,7 @@
+"""
+Fitter for pairwise state tomography
+"""
+
 from qiskit.ignis.verification.tomography import StateTomographyFitter, TomographyFitter
 from qiskit.ignis.verification.tomography.data import marginal_counts
 
@@ -7,16 +11,28 @@ from qiskit.result import Result
 from qiskit import QuantumCircuit
 
 from itertools import combinations, product
+from tqdm import tqdm
 
 class PairwiseStateTomographyFitter(StateTomographyFitter):
     """
-    Doc
+    Pairwise Maximum-likelihood estimation state tomography fitter
     """
 
-    def __init__(self, result, circuits, qubit_list):
+    def __init__(self, result, circuits, measured_qubits):
+        """
+        Initialize state tomography fitter with experimental data.
+
+        Args:
+            result (Result): a Qiskit Result object obtained from executing
+                            pairwise tomography circuits.
+            circuits (list): a list of circuits or circuit names to extract
+                            count information from the result object.
+            measured_qubits (list): a list of indices of the measured qubits
+                            (corresponding to the tomography circuits)
+        """
         self._circuits = circuits
         self._result = result
-        self._qubit_list = sorted(qubit_list)
+        self._qubit_list = sorted(measured_qubits)
 
         self._meas_basis = None
         self._prep_basis = None
@@ -24,13 +40,19 @@ class PairwiseStateTomographyFitter(StateTomographyFitter):
         super().set_preparation_basis("Pauli")
         self._data = {}
 
-    def fit(self, pairs_list=None):
+    def fit(self, pairs_list=None, **kwargs):
         """
-        pair_list = [ (i1, j1), (i2, j2), ... ]
+        Reconstruct pairwise quantum states using CVXPY convex optimization.
 
-        1. Select the results and circuits that are relevant for the qubit pairs
-        2. Prepare marginalized results (using the builtin function)
-        3. Relabel the circuits so that they are acceptable for the StateTomographyFitter
+        Args:
+            pairs_list (list): A list of tuples containing the indices of the 
+                               qubit pairs for which to perform tomography
+            **kwargs (optional): kwargs for fitter method, 
+            see BaseTomographyFitter
+
+        Returns:
+            A dictionary of the form {(i, j): rho(i,j)}, where rho(i,j) is the 
+            two-qubit density matrix for qubits i, j
         """
 
         # If no list of pairs provided, then evaluate for all qubit pairs
@@ -39,12 +61,12 @@ class PairwiseStateTomographyFitter(StateTomographyFitter):
 
         result = {}
 
-        for p in pairs_list:
-            result[p] = self.fit_ij(*p)
+        for p in tqdm(pairs_list):
+            result[p] = self.fit_ij(*p, **kwargs)
 
         return result
 
-    def fit_ij(self, i, j):
+    def fit_ij(self, i, j, **kwargs):
         """
             Returns the tomographic reconstruction for the qubits i and j
         """
@@ -80,7 +102,7 @@ class PairwiseStateTomographyFitter(StateTomographyFitter):
             raise Exception("Could not find all the measurements required for tomography")
 
         # Do the actual fit
-        result = super().fit()
+        result = super().fit(**kwargs)
 
         # clear the _data field
         self._data = None
