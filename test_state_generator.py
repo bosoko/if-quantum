@@ -169,6 +169,6 @@ def q_instability_state_circuit(n_qubits = 4, n_ones = 3):
     q_instability = q_instability_psi(n_qubits,n_ones)
     q = QuantumRegister(n_qubits)
     qc = QuantumCircuit(q)
-    qc.initialize(hyper_dicke_state, list(range(n_qubits)))
+    qc.initialize(q_instability, list(range(n_qubits)))
     
     return qc
