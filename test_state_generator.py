@@ -82,8 +82,8 @@ def hyper_dicke_state_circuit(n_qubits = 4, lbda = 0):
     return qc
 
 
-def tony_state():
-    # 3-qubit ground state of spin Ising model in the computational basis
+def tony_state_psi():
+    # 6-qubit ground state of spin Ising model in the computational basis
     # numerically calculated by Tony with Mathematica
     vector = np.array([-0.654068, 0, 0, 0.216952, 0, -0.15362, 0.216952, 0, 0, 0.140428, \
         -0.15362, 0, 0.216952, 0, 0, -0.0824614, 0, -0.15362, 0.140428, 0, \
@@ -99,6 +99,9 @@ def tony_state():
 def tony_state_circuit():
     q = QuantumRegister(6)
     qc = QuantumCircuit(q)
-    qc.initialize(tony_state(), list(range(6)))
-
+    qc.initialize(tony_state_psi(), list(range(6)))
     return qc
+
+def q_instability_psi(n_qubits):
+    # from Phys. Rev. A 79, 022302 , eq. 4
+    pass
