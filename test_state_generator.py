@@ -1,4 +1,4 @@
-from sympy.utilities.iterables import multiset_permutations
+from sympy.utilities.iterables import multiset_permutations, generate_bell
 from scipy.special import binom
 from scipy.linalg import norm
 
@@ -117,21 +117,26 @@ def q_instability_psi(n_qubits, n_ones):
     # generate all permutations
     statevect_permutations_int = multiset_permutations(statevector_init_int)
 
+    # generate a list of combinations of flipped spin locations for a given number of spins
     ls = [list(np.nonzero(row)[0]) for row in list(statevect_permutations_int)]
     ls = np.array(ls)
     
-    ks = list(multiset_permutations(list(range(n_ones))))
+    # generate a permutation group for number of spins
+    #ks = list(multiset_permutations(list(range(n_ones))))
+    ks = list(generate_bell(n_ones))
     ks = np.array(ks)
     
-    
+
     # construct pairs of ks and ls
     clist =[]
     for llist in ls:
-        #1
+        # llist goes in the subscript of C (so C_(llist))
         c = 0
         for j, klist in enumerate(ks):
-
-            cterm = 1 * (-1)**(j + 1)
+            # j = permutation number
+            # klist = ks[j] = member of the permuation group of k
+            #       = P_j(ks)
+            cterm = (-1)**(j + 1)
             for i in range(len(klist)):
                 k,l = klist[i], llist[i]
                 
@@ -153,7 +158,7 @@ def q_instability_psi(n_qubits, n_ones):
     # these will be the locations of nonzero probabilities
     positiveproblocations = [int("".join(vect_permutation),2) for vect_permutation in statevect_permutations]
     
-    # generate Dicke state
+    # generate XX state
     q_instability_state = [0.]*2**n_qubits
     for i,loc in enumerate(positiveproblocations):
         q_instability_state[loc] = clist[i]
@@ -172,3 +177,5 @@ def q_instability_state_circuit(n_qubits = 4, n_ones = 3):
     qc.initialize(q_instability, list(range(n_qubits)))
     
     return qc
+
+
